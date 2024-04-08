@@ -1,0 +1,7 @@
+test:
+  image: dockerhub.harbor.rnds.pro/dockerhub/rnds/gitlab-runner:latest
+  stage: test
+  script:
+    - docker-compose build
+    - docker-compose up -d
+    - docker-compose exec -T app bundle exec rspec
