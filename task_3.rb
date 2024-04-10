@@ -6,5 +6,5 @@
 # filter_list([1,2,'aasf','1','123',123]) == [1,2,123]
 
 def filter_list(list)
-  list.select { |item| item.is_ a?(Integer || Float) }
+  list.select { |item| item.is_a?(Numeric) }
 end
