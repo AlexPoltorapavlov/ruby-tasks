@@ -2,5 +2,13 @@
 # Напишите функцию, которая вернет сумму всех чисел, кратных 3 или 5, ниже введенного числа.
 
 def solution(number)
-  # your code
+  sum = 0
+
+  (1...number).each do |i|
+    if i % 3 == 0 || i % 5 == 0
+      sum += i
+    end
+  end
+
+  sum
 end
