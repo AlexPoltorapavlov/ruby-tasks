@@ -39,7 +39,7 @@ class PaginationHelper
 
   # returns the number of pages
   def page_count
-    (collection / items_per_page).ceil
+    (item_count.to_f / items_per_page).ceil
   end
 
   # returns the number of items on the current page. page_index is zero based.
