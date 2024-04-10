@@ -16,17 +16,17 @@
 
 # rubocop:disable Metrics/CyclomaticComplexity
 # rubocop:disable Metrics/MethodLength
-def valid_walk?(walk)
+def is_valid_walk(walk)
   return false unless walk.size == 10
 
   ns = 0
   ew = 0
-  walk.each do |i|
-    case i
-    when n then ns += 1
-    when s then ns -= 1
-    when e then ew += 1
-    when w then ew -= 1
+  walk.each do |direction|
+    case direction
+    when 'n' then ns += 1
+    when 's' then ns -= 1
+    when 'e' then ew += 1
+    when 'w' then ew -= 1
     end
   end
   ns.zero? && ew.zero?
