@@ -7,8 +7,7 @@ def solution(number)
   sum = 0
 
   (1...number).each do |i|
-    (i % 3).zero? || (i % 5).zero?
-    sum += i
+    sum += i if (i % 3).zero? || (i % 5).zero?
   end
   sum
 end
