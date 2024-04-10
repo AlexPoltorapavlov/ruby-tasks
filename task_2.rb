@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Вы, наверное, знаете систему лайков по Facebook и другим страницам.
 # Люди могут ставить лайки постам в блогах, изображениям и другим элементам.
 # Мы хотим создать текст, который должен отображаться рядом с таким элементом.
@@ -12,15 +14,8 @@
 
 def likes(names)
   case names.length
-  when 0
-    'no one likes this'
-  when 1
-    "#{names[0]} likes this"
-  when 2
-    "#{names[0]} and #{names[1]} like this"
-  when 3
-    "#{names[0]}, #{names[1]} and #{names[2]} like this"
-  else
-    "#{names[0]}, #{names[1]} and #{names.length - 2} like this"
+  when 0 then 'no one likes this'
+  when 1, 2, 3 then "#{names[0..names.length - 1].join(', ')} likes this"
+  else "#{names[0]}, #{names[1]} and #{names.length - 2} like this"
   end
 end
