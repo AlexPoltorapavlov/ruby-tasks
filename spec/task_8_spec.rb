@@ -23,5 +23,6 @@ describe 'task_8' do
     expect(sanitize('.')).to eq('\.')
     expect(sanitize('!')).to eq('\!')
     expect(sanitize('Hello, world!')).to eq('Hello\, world\!')
+    expect(sanitize('@?')).to eq('@?')
   end
 end
