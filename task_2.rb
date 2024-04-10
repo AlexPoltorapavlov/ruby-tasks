@@ -11,5 +11,16 @@
 # Примечание. При наличии 4 и более имен число в «and 2 others» просто увеличивается.
 
 def likes(names)
-  # your code
+  case names.length
+  when 0
+    'no one likes this'
+  when 1
+    "#{names[0]} likes this"
+  when 2
+    "#{names[0]} and #{names[1]} like this"
+  when 3
+    "#{names[0]}, #{names[1]} and #{names[2]} like this"
+  else
+    "#{names[0]}, #{names[1]} and #{names.length - 2} like this"
+  end
 end
