@@ -7,8 +7,7 @@
 # * url = "https://www.cnet.com"                -> domain name = cnet"
 
 def domain_name(url)
-  url = url.gsub('http://', '')
-  url = url.gsub('https://', '')
-  url = url.gsub('www.', '')
-  url.split('.').first
+  domain = url
+  domain = domain.sub(%r{(http://)?(https://)?(www\.)?(s://)?}, '')
+  domain.split('.')[0]
 end
