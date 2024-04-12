@@ -4,10 +4,5 @@
 # Напишите функцию, которая вернет сумму всех чисел, кратных 3 или 5, ниже введенного числа.
 
 def solution(number)
-  sum = 0
-
-  (1...number).each do |i|
-    sum += i if (i % 3).zero? || (i % 5).zero?
-  end
-  sum
+  (1...number).sum { |i| (i % 3).zero? || (i % 5).zero? ? i : 0 }
 end
