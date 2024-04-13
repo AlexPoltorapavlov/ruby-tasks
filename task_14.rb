@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
-# Для этой задачи нет тестов (сами все придумываете). Создайте утилитку, которая позволяет взаимодействовать с Bot API Telegram
+# Для этой задачи нет тестов (сами все придумываете). Создайте утилитку, которая позволяет взаимодействовать с Bot API
+#  Telegram
 # Требование:
 # - возможность подключения любого бота
 # - возможность проверки обновлений
 # - возможность регистрации, редактирования и удаления Webhook
 
 require 'net/http'
+require 'net/https'
 require 'json'
 require 'uri'
 
@@ -19,73 +21,49 @@ class TelegramBotUtility
   end
 
   def get_updates(offset = nil)
-    method = 'getUpdates'
-    uri = URI("#{BASE_URL}#{@token}/#{method}")
-
-    params = {
-      offset: offset
-    }
-
-    uri.query = URI.encode_www_form(params)
-
-    res = Net::HTTP.get_response(uri)
-
-    JSON.parse(res.body)
+    api_request('getUpdates', { offset: offset })
   end
 
   def send_message(chat_id, text)
-    method = 'sendMessage'
-    uri = URI("#{BASE_URL}#{@token}/#{method}")
-
-    params = {
-      chat_id: chat_id,
-      text: text
-    }
-
-    uri.query = URI.encode_www_form(params)
-
-    res = Net::HTTP.get_response(uri)
-
-    JSON.parse(res.body)
+    api_request('sendMessage', { chat_id: chat_id, text: text })
   end
 
-  def set_webhook(url)
-    method = 'setWebhook'
-    uri = URI("#{BASE_URL}#{@token}/#{method}")
-
-    params = {
-      url: url
-    }
-
-    uri.query = URI.encode_www_form(params)
-
-    res = Net::HTTP.get_response(uri)
-
-    JSON.parse(res.body)
+  def webhook=(url)
+    api_request('setWebhook', { url: url })
   end
 
-  def get_webhook_info
-    method = 'getWebhookInfo'
-    uri = URI("#{BASE_URL}#{@token}/#{method}")
-
-    res = Net::HTTP.get_response(uri)
-
-    JSON.parse(res.body)
+  def webhook_info
+    api_request('getWebhookInfo')
   end
 
   def delete_webhook
-    method = 'deleteWebhook'
+    api_request('deleteWebhook')
+  end
+
+  private
+
+  def api_request(method, params = {})
     uri = URI("#{BASE_URL}#{@token}/#{method}")
+    uri.query = URI.encode_www_form(params) unless params.empty?
 
-    res = Net::HTTP.get_response(uri)
+    response = Net::HTTP.get_response(uri)
 
-    JSON.parse(res.body)
+    unless response.is_a?(Net::HTTPSuccess)
+      raise "HTTP Request failed with code #{response.code} and message #{response.message}"
+    end
+
+    JSON.parse(response.body)
   end
 end
 
-# bot = TelegramBotUtility.new('BOT_TOKEN')
-# bot.delete_webhook
-# puts bot.get_updates
-# bot.send_message('chat_id', bot.get_updates)
-# bot.set_webhook('https://yourwebsite.com/your-endpoint')
-# bot.send_message('chat_id', bot.get_webhook_info)
+# bot = TelegramBotUtility.new('BOT-TOKEN')
+# begin
+#   bot.delete_webhook
+# rescue RuntimeError => e
+#   puts "Webhook not found: #{e}"
+# end
+# updates = bot.get_updates
+# chat_ids = updates['result'].map { |update| update['message']['chat']['id'] }
+# bot.send_message(chat_ids[0], updates)
+# bot.webhook = ('https://yourwebsite.com/your-endpoint')
+# bot.send_message(chat_ids[0], bot.webhook_info.to_s)
